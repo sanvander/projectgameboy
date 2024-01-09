@@ -83,4 +83,8 @@ void loop() {
 
 }
 
+void clearLine(int y) {
+  tft.fillRect(0, y, tft.width(), 20, ILI9341_BLACK);
+  // tft.textHeight() geeft de hoogte van de huidige tekstgrootte
+}
 
