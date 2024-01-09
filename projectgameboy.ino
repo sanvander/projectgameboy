@@ -17,13 +17,11 @@
 #include "SPI.h"
 #include "Adafruit_GFX.h"
 #include "Adafruit_ILI9341.h"
-#include "SD.h"
 
 // For the Adafruit shield, these are the default.
 #define TFT_DC 9
 #define TFT_CS 10
 #define TFT_RST 8
-#define SD_CS 6
 
 const int buttonPin = 2;
 int buttonState;         
@@ -49,14 +47,6 @@ void setup() {
   tft.setTextColor(ILI9341_WHITE);
   tft.setTextSize(2);
   tft.println(button_clicks);
-  
-    if (!SD.begin(SD_CS)) {
-    tft.println("SD card initialization failed!");
-    return;
-    
-  }
-  tft.println("SD card contents:");
-  printDirectory(SD.open("/"), 0);
   
 }
 
@@ -93,26 +83,4 @@ void loop() {
 
 }
 
-void printDirectory(File dir, int numTabs) {
-  while (true) {
-    File entry =  dir.openNextFile();
-    if (! entry) {
-      // no more files
-      break;
-    }
-    for (uint8_t i=0; i<numTabs; i++) {
-      tft.print('\t');
-    }
-    tft.println(entry.name());
-    if (entry.isDirectory()) {
-      printDirectory(entry, numTabs+1);
-    }
-    entry.close();
-  }
-}
-
-void clearLine(int y) {
-  tft.fillRect(0, y, tft.width(), 20, ILI9341_BLACK);
-  // tft.textHeight() geeft de hoogte van de huidige tekstgrootte
-}
 
